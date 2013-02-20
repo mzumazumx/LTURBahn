@@ -8,7 +8,7 @@ public class Journey implements Comparable<Journey> {
 	public Journey() {
 
 	}
-
+	
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append(price);

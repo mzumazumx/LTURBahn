@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class Main {
 		SimpleDateFormat sdfTime2 = new SimpleDateFormat("m");
 		Calendar cal = new GregorianCalendar();
 		int interval = 6;
-		for (int j = 0; j < 7*24/interval; j++) {
+		for (int j = 0; j < 7 * 24 / interval; j++) {
 			cal.add(Calendar.HOUR, interval);
 
 			String from_date = sdfDate.format(cal.getTime());
@@ -73,10 +72,10 @@ public class Main {
 
 			Document doc = Jsoup.parse(html, "utf-8");
 			Elements prices = doc.select("label");
-			
+
 			boolean foundSomething = false;
 			boolean foundSomethingNew = false;
-			
+
 			for (Element price : prices) {
 				String text = price.text();
 				if (text.endsWith("Û")) {
@@ -107,43 +106,17 @@ public class Main {
 				}
 			}
 			if (!foundSomething && !foundSomethingNew) {
-				System.out.println("no results in request #"+j);
+				System.out.println("no results in request #" + j);
 			} else if (!foundSomethingNew) {
-				System.out.println("no new results in request #"+j);
+				System.out.println("no new results in request #" + j);
 			}
 		}
-		
+
 		Collections.sort(journeys);
 
 		for (Journey journey : journeys) {
 			System.out.println(journey);
 		}
-	}
-
-	private static List<String> getCookie(String urlString, List<String> cookies) {
-		List<String> cookiesInternal = new ArrayList<String>();
-		URL url;
-		try {
-			url = new URL(urlString);
-			HttpURLConnection urlConn = (HttpURLConnection) url
-					.openConnection();
-			urlConn.setRequestProperty("Connection", "Keep-Alive");
-			for (String cookie : cookies) {
-				urlConn.addRequestProperty("Cookie", cookie.split(";", 1)[0]);
-			}
-			HttpURLConnection httpConn = (HttpURLConnection) urlConn;
-			httpConn.setAllowUserInteraction(false);
-			httpConn.setInstanceFollowRedirects(false);
-			httpConn.connect();
-			cookies = httpConn.getHeaderFields().get("Set-Cookie");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return cookiesInternal;
 	}
 
 	private static List<String> getCookie(String urlString) {
